@@ -139,13 +139,19 @@ def joint_probability(people, one_gene, two_genes, have_trait):
         * everyone in set `have_trait` has the trait, and
         * everyone not in set` have_trait` does not have the trait.
     """
+    print("----------------")
+    print("\n\n")
     print(people)
+    print("\n\n")
+    print("----------------")
     print(one_gene)
     print(two_genes)
     print(have_trait)
     for p in people:
         print(p)
     joint = 1
+    temp1 = 0
+    temp2 = 0
     for p in people:
         if people[p]["mother"] == None:
             temp1 = 0
@@ -155,6 +161,7 @@ def joint_probability(people, one_gene, two_genes, have_trait):
                     temp1 = temp1 * PROBS["trait"][1][True]
                 else:
                     temp1 = temp1 * PROBS["trait"][1][False]
+                #return temp1
             elif p in two_genes:
                 temp1 = PROBS["gene"][2]
                 if p in have_trait:
@@ -168,78 +175,81 @@ def joint_probability(people, one_gene, two_genes, have_trait):
                 else:
                     temp1 = temp1 * PROBS["trait"][0][False]
             joint = joint * temp1
-            print(f"Joint is {joint}")
-            return joint
         else:
-            temp1 = 0
             if p in one_gene:
                 # From Mother's side
-                temp1 = 0
                 if people[p]["mother"] in one_gene:
-                    temp1 = 0.5 * (1 - PROBS["mutation"])
+                    temp1 = 0.5
                 elif people[p]["mother"] in two_genes:
                     temp1 = 1 * (1 - PROBS["mutation"])
                 else:
                     temp1 = PROBS["mutation"]
                 if people[p]["father"] in one_gene:
-                    temp1 = temp1 * (0.5 - 0.5 * PROBS["mutation"])
+                    temp1 = temp1 * 0.5
                 elif people[p]["father"] in two_genes:
                     temp1 = temp1 * (PROBS["mutation"])
                 else:
                     temp1 = temp1 * (1 - PROBS["mutation"])
                 # From Father's side
-                temp2 = 0
                 if people[p]["father"] in one_gene:
-                    temp2 = 0.5 * (1 - PROBS["mutation"])
+                    temp2 = 0.5
                 elif people[p]["father"] in two_genes:
                     temp2 = 1 * (1 - PROBS["mutation"])
                 else:
                     temp2 = PROBS["mutation"]
                 if people[p]["mother"] in one_gene:
-                    temp2 = temp2 * (0.5 - 0.5 * PROBS["mutation"])
+                    temp2 = temp2 * 0.5
                 elif people[p]["mother"] in two_genes:
                     temp2 = temp2 * (PROBS["mutation"])
                 else:
                     temp2 = temp2 * (1 - PROBS["mutation"])
-                joint = temp1 + temp2
+                temp1 = temp1 + temp2
             elif p in two_genes:
-                temp1 = 0
-                temp2 = 0
                 if people[p]["mother"] in one_gene:
-                    temp1 = 0.5 * (1 - PROBS["mutation"])
+                    temp1 = 0.5
                 elif people[p]["mother"] in two_genes:
                     temp1 = 1 * (1 - PROBS["mutation"])
                 else:
                     temp1 = PROBS["mutation"]
                 if people[p]["father"] in one_gene:
-                    temp2 = 0.5 * (1 - PROBS["mutation"])
+                    temp2 = 0.5
                 elif people[p]["father"] in two_genes:
                     temp2 = 1 * (1 - PROBS["mutation"])
                 else:
                     temp2 = PROBS["mutation"]
-                joint = temp1 * temp2
+                temp1 = temp1 * temp2
             else:
-                temp1 = 0
-                temp2 = 0
                 if people[p]["mother"] in one_gene:
-                    temp1 = 0.5 * (1 - PROBS["mutation"])
+                    temp1 = 0.5
                 elif people[p]["mother"] in two_genes:
                     temp1 = PROBS["mutation"]
                 else:
                     temp1 = 1 - PROBS["mutation"]
                 if people[p]["father"] in one_gene:
-                    temp2 = 0.5 * (1 - PROBS["mutation"])
+                    temp2 = 0.5
                 elif people[p]["father"] in two_genes:
                     temp2 = PROBS["mutation"]
                 else:
                     temp2 = 1 - PROBS["mutation"]
-                joint = temp1 * temp2
+                temp1 = temp1 * temp2
             if p in have_trait:
                 print(f"Joint is {joint * PROBS['trait'][0][True]}")
-                return joint * PROBS["trait"][0][True]
+                if p in one_gene:
+                    temp1 = temp1 * PROBS["trait"][1][True]
+                elif p in two_genes:
+                    temp1 = temp1 * PROBS["trait"][2][True]
+                else:
+                    temp1 = temp1 * PROBS["trait"][0][True]
             else:
                 print(f"Joint is {joint * PROBS['trait'][0][False]}")
-                return joint * PROBS["trait"][0][False]
+                if p in one_gene:
+                    temp1 = temp1 * PROBS["trait"][1][False]
+                elif p in two_genes:
+                    temp1 = temp1 * PROBS["trait"][2][False]
+                else:
+                    temp1 = temp1 * PROBS["trait"][0][False]
+            joint = joint * temp1
+    return joint
     #raise NotImplementedError
 
 

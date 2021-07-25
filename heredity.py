@@ -139,16 +139,6 @@ def joint_probability(people, one_gene, two_genes, have_trait):
         * everyone in set `have_trait` has the trait, and
         * everyone not in set` have_trait` does not have the trait.
     """
-    print("----------------")
-    print("\n\n")
-    print(people)
-    print("\n\n")
-    print("----------------")
-    print(one_gene)
-    print(two_genes)
-    print(have_trait)
-    for p in people:
-        print(p)
     joint = 1
     temp1 = 0
     temp2 = 0
@@ -161,7 +151,6 @@ def joint_probability(people, one_gene, two_genes, have_trait):
                     temp1 = temp1 * PROBS["trait"][1][True]
                 else:
                     temp1 = temp1 * PROBS["trait"][1][False]
-                #return temp1
             elif p in two_genes:
                 temp1 = PROBS["gene"][2]
                 if p in have_trait:
@@ -233,7 +222,6 @@ def joint_probability(people, one_gene, two_genes, have_trait):
                     temp2 = 1 - PROBS["mutation"]
                 temp1 = temp1 * temp2
             if p in have_trait:
-                print(f"Joint is {joint * PROBS['trait'][0][True]}")
                 if p in one_gene:
                     temp1 = temp1 * PROBS["trait"][1][True]
                 elif p in two_genes:
@@ -241,7 +229,6 @@ def joint_probability(people, one_gene, two_genes, have_trait):
                 else:
                     temp1 = temp1 * PROBS["trait"][0][True]
             else:
-                print(f"Joint is {joint * PROBS['trait'][0][False]}")
                 if p in one_gene:
                     temp1 = temp1 * PROBS["trait"][1][False]
                 elif p in two_genes:
